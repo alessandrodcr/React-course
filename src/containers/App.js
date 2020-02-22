@@ -4,6 +4,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Aux from '../hoc/Aux';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
 
@@ -21,7 +22,8 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false,
     showCockpit: true,
-    changeCounter: 0
+    changeCounter: 0,
+    authenticated: false
   };
 
   static getDerivedStateFromProps(props, state){ //2
@@ -70,9 +72,13 @@ class App extends Component {
     });
   };
 
-  togglePersonsHandler = () =>{
+  togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({ showPersons: !doesShow});
+  }
+
+  loginHandler = () => {
+      this.setState({authenticated:true});
   }
 
   render() { //3
@@ -85,6 +91,7 @@ class App extends Component {
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
             changed={this.changeNameHandler}
+            isAuthenticated={this.state.authenticated}
           />
     }
 
@@ -99,6 +106,7 @@ class App extends Component {
               showPersons={this.state.showPersons}
               personsLength={this.state.persons.length}
               clicked={this.togglePersonsHandler}
+              login={this.loginHandler}
           />) : null}
           {persons}
         </Aux>
